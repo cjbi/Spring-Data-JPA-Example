@@ -13,9 +13,9 @@ Hibernate（JBoos）、EclipseLink（Eclipse社区）、OpenJPA（Apache基金�
  
 # Spring Data JPA
 
-来看一下Spring官方的解释https://spring.io/projects/spring-data-jpa#overview
+来看一下Spring官方的解释： https://spring.io/projects/spring-data-jpa#overview
 
-![](doc/image/2020-04-10 12-22-54屏幕截图.png)
+![](doc/image/springdatajpa.png)
 
 Spring Data JPA是Spring Data家族的一部分，可以轻松实现基于JPA的存储库。 此模块处理对基于JPA的数据访问层的增强支持。
 它使构建使用数据访问技术的Spring驱动应用程序变得更加容易。
@@ -24,6 +24,48 @@ Spring Data JPA是Spring Data家族的一部分，可以轻松实现基于JPA的
 Spring Data JPA旨在通过减少实际需要的工作量来显著改善数据访问层的实现。 作为开发人员，您编写repository接口，包括自定义查找器方法，Spring将自动提供实现。
 
 总的来说JPA是ORM规范，Hibernate、TopLink等是JPA规范的具体实现，这样的好处是开发者可以面向JPA规范进行持久层的开发，而底层的实现则是可以切换的。Spring Data Jpa则是在JPA之上添加另一层抽象（Repository层的实现），极大地简化持久层开发及ORM框架切换的成本。
+
+## 快速入门
+
+在Spring-Boot中加入依赖：
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.data</groupId>
+    <artifactId>spring-data-jpa</artifactId>
+  </dependency>
+<dependencies>
+```
+在application.propertie中加入数据源配置：
+```properties
+# 数据源配置
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://wetech.tech:3306/example
+spring.datasource.username=example
+spring.datasource.password=rjtJmEz3r5BEw3j3
+```
+新建实体
+```java
+@Entity
+public class Book {
+@Id
+private Long id;
+@Column(name = "name")
+private String name;
+// 以下省略...
+}
+```
+新建Repository
+```java
+public interface BookRepository extends Repository<Book, Long> {
+    // 关键字方法名查询
+    Book findDistinctFirstByName(String name);
+    // Query注解查询
+    @Query(value = "from Book b where b.name like %:name%")
+    List<Book> findByNameMatch(@Param("name") String name);
+}
+```
 
 
 ## @Query注解的用法(Spring Data JPA)
@@ -46,7 +88,7 @@ List<Book> findByNameMatch(@Param("name") String name);
 
 所谓本地查询，就是使用原生的sql语句（根据数据库的不同，在sql的语法或结构方面可能有所区别）进行查询数据库的操作。
 ```java
-@Query(value = "select * from t_book b where b.name=?1", nativeQuery = true)
+@Query(value = "select * from book b where b.name=?1", nativeQuery = true)
 List<Book> findByName(String name);
 ```
 
@@ -67,7 +109,7 @@ public interface BookQueryRepositoryExample extends Repository<Book, Long>{
 ```
 6. 一个较完整的例子
 ```java
-public interface BookQueryRepositoryExample extends Repository<Book, Long> {
+public interface BookRepository extends Repository<Book, Long> {
     @Query(value = "select * from Book b where b.name=?1", nativeQuery = true) 
     List<Book> findByName(String name);// 此方法将会报错(java.lang.IllegalArgumentException)，
 
@@ -80,7 +122,6 @@ public interface BookQueryRepositoryExample extends Repository<Book, Long> {
     @Query(value = "select new Book(name,author,price) from Book b where b.name = :name AND b.author=:author AND b.price=:price")
     List<Book> findByNamedParam(@Param("name") String name, @Param("author") String author,
             @Param("price") long price);//查询指定的字段
-
 }
 ```
 
@@ -247,12 +288,12 @@ Spring Data JPA 中我们经常会对数据库进行各种各样的CURD操作。
 ## 扩展阅读
 
 ### Hibernate-VS-MyBatis
-
+ 
 [Hibernate-VS-MyBatis.md](doc/Hibernate-VS-MyBatis.md "Hibernate-VS-MyBatis")
 
 ### Spring Data Rest
 
-![](doc/image/2020-04-10 12-54-10屏幕截图.png)
+![](doc/image/springdatarest.png)
 
 Spring Data REST 作为 Spring Data 项目的子集，开发者只需使用注解 @RepositoryRestResource 标记，就可以把整个 Repository 转换为 HAL 风格的 REST 资源。
 
