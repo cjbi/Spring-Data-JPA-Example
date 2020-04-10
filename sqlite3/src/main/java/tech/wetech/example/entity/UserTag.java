@@ -37,12 +37,4 @@ public class UserTag implements Serializable {
         this.userDetail = userDetail;
     }
 
-    @Override
-    public String toString() {
-        return "UserTag{" +
-                "id=" + id +
-                ", userDetail=" + userDetail +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

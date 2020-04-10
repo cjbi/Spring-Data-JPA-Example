@@ -25,6 +25,7 @@
         <module>sql</module>
         <module>qpaas</module>
         <module>rest</module>
+        <module>sqlite3</module>
     </modules>
 
     <dependencies>
