@@ -15,6 +15,10 @@ public class SystemContextHolder {
      */
     private static final ThreadLocal<String> appId = new ThreadLocal<>();
 
+    private static final ThreadLocal<String> tableId = new ThreadLocal<>();
+
+    private static final ThreadLocal<Boolean> dynamicModel = ThreadLocal.withInitial(() -> Boolean.FALSE);
+
     public static String getEntId() {
         return entId.get();
     }
@@ -29,6 +33,22 @@ public class SystemContextHolder {
 
     public static void setAppId(String appId) {
         SystemContextHolder.appId.set(appId);
+    }
+
+    public static void setTableId(String tableId) {
+        SystemContextHolder.tableId.set(tableId);
+    }
+
+    public static String getTableId() {
+        return SystemContextHolder.tableId.get();
+    }
+
+    public static void setDynamicModel(boolean dynamicModel) {
+        SystemContextHolder.dynamicModel.set(dynamicModel);
+    }
+
+    public static boolean isDynamicModel() {
+        return SystemContextHolder.dynamicModel.get();
     }
 
     public static void setEntIdAndAppId(String entId, String appId) {
