@@ -19,6 +19,9 @@ public class MetadataSourcesGenerator {
         sb.append("<generator class=\"native\" />");
         sb.append("</id>");
         for (MetaDataContext.ColumnProperty columnProperty : metaDataContext.getColumnProperties()) {
+            if ("id".equals(columnProperty.getName())) {
+                continue;
+            }
             sb.append(String.format("<property name=\"%s\" type=\"%s\" column=\"%s\"/>", columnProperty.getName(), columnProperty.getType(), columnProperty.getColumn()));
         }
         sb.append("</class>");

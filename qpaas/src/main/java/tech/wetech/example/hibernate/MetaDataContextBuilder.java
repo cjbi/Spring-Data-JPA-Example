@@ -23,9 +23,6 @@ public class MetaDataContextBuilder {
         String table = String.format("ent_%s_datapool_%s", entId, tableId);
         MetaDataContext context = new MetaDataContext(table, getEntityName(entId, tableId));
         for (DatacenterField datacenterField : list) {
-            if ("id".equals(datacenterField.getId())) {
-                continue;
-            }
             MetaDataContext.ColumnProperty columnProperty = new MetaDataContext.ColumnProperty();
             columnProperty.setName(datacenterField.getId());
             columnProperty.setColumn(datacenterField.getId());
