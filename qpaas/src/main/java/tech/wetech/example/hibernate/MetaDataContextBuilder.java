@@ -9,6 +9,10 @@ import java.util.List;
  */
 public class MetaDataContextBuilder {
 
+    public static String getEntityName(String entId, String tableId) {
+        return String.format("ent_%s_datapool_%s", entId, tableId);
+    }
+
     /**
      * 创建动态模型映射
      *
@@ -17,7 +21,7 @@ public class MetaDataContextBuilder {
      */
     public static MetaDataContext buildMetaDataContexts(String entId, String tableId, List<DatacenterField> list) {
         String table = String.format("ent_%s_datapool_%s", entId, tableId);
-        MetaDataContext context = new MetaDataContext(table, entId + tableId);
+        MetaDataContext context = new MetaDataContext(table, getEntityName(entId, tableId));
         for (DatacenterField datacenterField : list) {
             if ("id".equals(datacenterField.getId())) {
                 continue;
@@ -25,7 +29,7 @@ public class MetaDataContextBuilder {
             MetaDataContext.ColumnProperty columnProperty = new MetaDataContext.ColumnProperty();
             columnProperty.setName(datacenterField.getId());
             columnProperty.setColumn(datacenterField.getId());
-            columnProperty.setType(JavaTypeEnum.getJavaType(datacenterField.getType()));
+            columnProperty.setType(TypeEnum.getJavaType(datacenterField.getType()));
             context.addColumnProperty(columnProperty);
         }
         return context;

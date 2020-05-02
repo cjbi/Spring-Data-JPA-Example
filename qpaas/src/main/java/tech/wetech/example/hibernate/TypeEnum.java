@@ -3,7 +3,7 @@ package tech.wetech.example.hibernate;
 /**
  * @author cjbi
  */
-public enum JavaTypeEnum {
+public enum TypeEnum {
 
     string("java.lang.String"),
     datetime("java.util.Date"),
@@ -23,12 +23,12 @@ public enum JavaTypeEnum {
 
     private static final String DEFAULT_JAVA_TYPE = "java.lang.String";
 
-    JavaTypeEnum(String javaType) {
+    TypeEnum(String javaType) {
         this.javaType = javaType;
     }
 
     public static String getJavaType(String type) {
-        for (JavaTypeEnum value : JavaTypeEnum.values()) {
+        for (TypeEnum value : TypeEnum.values()) {
             if (value.name().equals(type)) {
                 return value.getJavaType();
             }

@@ -14,9 +14,9 @@ public class DatapoolController {
     @Autowired
     private DatapoolRepository datapoolRepository;
 
-    @GetMapping("/test")
-    public void findAll() {
-//        return datapoolRepository.findAll2();
+    @GetMapping("/datapool/findAll")
+    public Object findAll() {
+        return datapoolRepository.findAll("dingdanxitong", "jichuyinqingceshi");
     }
 
 }
