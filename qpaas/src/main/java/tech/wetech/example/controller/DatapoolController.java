@@ -18,13 +18,13 @@ public class DatapoolController {
     private DatapoolRepository datapoolRepository;
 
     @GetMapping("/datapool/findAll")
-    public Object findAll() {
-        return datapoolRepository.findAll("dingdanxitong", "jichuyinqingceshi");
+    public Object findAll(@RequestParam(defaultValue = "dingdanxitong") String entId, @RequestParam(defaultValue = "jichuyinqingceshi") String tableId) {
+        return datapoolRepository.findAll(entId, tableId);
     }
 
     @GetMapping("/datapool/findBy")
-    public Object findBy(@RequestParam Map<String, Object> param) {
-        return datapoolRepository.findBy("dingdanxitong", "jichuyinqingceshi", param);
+    public Object findBy(@RequestParam(defaultValue = "dingdanxitong") String entId, @RequestParam(defaultValue = "jichuyinqingceshi") String tableId, @RequestParam Map<String, Object> param) {
+        return datapoolRepository.findBy(entId, tableId, param);
     }
 
 }

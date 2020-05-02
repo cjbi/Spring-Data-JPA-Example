@@ -6,16 +6,16 @@ import java.util.List;
 /**
  * @author cjbi
  */
-public class MetaDataContext {
+public class MetadataContext {
 
     private String table;
     private String entityName;
     private List<ColumnProperty> columnProperties = new ArrayList<>();
 
-    public MetaDataContext() {
+    public MetadataContext() {
     }
 
-    public MetaDataContext(String table, String entityName) {
+    public MetadataContext(String table, String entityName) {
         this.table = table;
         this.entityName = entityName;
     }

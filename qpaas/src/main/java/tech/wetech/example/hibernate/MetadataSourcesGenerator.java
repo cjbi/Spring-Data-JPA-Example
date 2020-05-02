@@ -11,14 +11,14 @@ public class MetadataSourcesGenerator {
      * @return
      * @throws ParserConfigurationException
      */
-    public static String toXMLString(MetaDataContext metaDataContext) {
+    public static String toXMLString(MetadataContext metaDataContext) {
         StringBuffer sb = new StringBuffer();
         sb.append("<hibernate-mapping>");
         sb.append(String.format("<class entity-name=\"%s\" table=\"%s\" dynamic-update=\"true\">", metaDataContext.getEntityName(), metaDataContext.getTable()));
         sb.append("<id name=\"id\" type=\"java.lang.Long\" length=\"64\" unsaved-value=\"null\">");
         sb.append("<generator class=\"native\" />");
         sb.append("</id>");
-        for (MetaDataContext.ColumnProperty columnProperty : metaDataContext.getColumnProperties()) {
+        for (MetadataContext.ColumnProperty columnProperty : metaDataContext.getColumnProperties()) {
             if ("id".equals(columnProperty.getName())) {
                 continue;
             }

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author cjbi
  */
-public class MetaDataContextBuilder {
+public class MetadataContextBuilder {
 
     public static String getEntityName(String entId, String tableId) {
         return String.format("ent_%s_datapool_%s", entId, tableId);
@@ -19,11 +19,11 @@ public class MetaDataContextBuilder {
      * @param list
      * @return
      */
-    public static MetaDataContext buildMetaDataContexts(String entId, String tableId, List<DatacenterField> list) {
+    public static MetadataContext buildMetaDataContexts(String entId, String tableId, List<DatacenterField> list) {
         String table = String.format("ent_%s_datapool_%s", entId, tableId);
-        MetaDataContext context = new MetaDataContext(table, getEntityName(entId, tableId));
+        MetadataContext context = new MetadataContext(table, getEntityName(entId, tableId));
         for (DatacenterField datacenterField : list) {
-            MetaDataContext.ColumnProperty columnProperty = new MetaDataContext.ColumnProperty();
+            MetadataContext.ColumnProperty columnProperty = new MetadataContext.ColumnProperty();
             columnProperty.setName(datacenterField.getId());
             columnProperty.setColumn(datacenterField.getId());
             columnProperty.setType(TypeEnum.getJavaType(datacenterField.getType()));
