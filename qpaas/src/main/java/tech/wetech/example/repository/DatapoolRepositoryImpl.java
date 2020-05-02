@@ -14,6 +14,7 @@ import tech.wetech.example.hibernate.MetaDataContextBuilder;
 import tech.wetech.example.hibernate.MetadataSourcesGenerator;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.metamodel.Metamodel;
 import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -57,9 +58,11 @@ public class DatapoolRepositoryImpl implements DatapoolRepository {
         Session session = openSession(entId, tableId);
         String entityName = MetaDataContextBuilder.getEntityName(entId, tableId);
         StringBuilder qlBuilder = new StringBuilder("from ").append(entityName);
-        String whereClause = param.entrySet().stream()
-                .collect(Collectors.mapping(e -> String.format("%s=:%s", e.getKey(), e.getKey()), Collectors.joining(" and", " where", "")));
-        qlBuilder.append(whereClause);
+        if(!param.isEmpty()) {
+            String whereClause = param.entrySet().stream()
+                    .collect(Collectors.mapping(e -> String.format(" %s=:%s", e.getKey(), e.getKey()), Collectors.joining(" and", " where", "")));
+            qlBuilder.append(whereClause);
+        }
         Query query = session.createQuery(qlBuilder.toString());
         param.forEach((key, value) -> query.setParameter(key, value));
         List list = query.getResultList();
