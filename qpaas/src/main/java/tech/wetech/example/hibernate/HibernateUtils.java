@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * 遗留问题：由于是自定义获取session，所以事务不受Spring控制
+ *
  * @author cjbi
  */
 public class HibernateUtils {
@@ -44,6 +45,10 @@ public class HibernateUtils {
         Metadata metadata = metadataSources.buildMetadata();
         sessionFactory = metadata.buildSessionFactory();
         return sessionFactory.openSession();
+    }
+
+    public static String getEntityName(String entId, String tableId) {
+        return MetadataContextBuilder.getEntityName(entId, tableId);
     }
 
     private static List<DatacenterField> getDatacenterField(String entId, String tableId) {

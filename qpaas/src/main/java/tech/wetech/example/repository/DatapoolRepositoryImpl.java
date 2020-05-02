@@ -4,7 +4,6 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import tech.wetech.example.hibernate.HibernateUtils;
-import tech.wetech.example.hibernate.MetadataContextBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,7 @@ public class DatapoolRepositoryImpl implements DatapoolRepository {
     @Override
     public List<Map<String, Object>> findAll(String entId, String tableId) {
         Session session = HibernateUtils.openSession(entId, tableId);
-        String entityName = MetadataContextBuilder.getEntityName(entId, tableId);
+        String entityName = HibernateUtils.getEntityName(entId, tableId);
         Query query = session.createQuery("from " + entityName);
         List list = query.getResultList();
         session.close();
@@ -29,7 +28,7 @@ public class DatapoolRepositoryImpl implements DatapoolRepository {
         long time = System.currentTimeMillis();
         Session session = HibernateUtils.openSession(entId, tableId);
         System.out.println("打开会话耗时:" + (System.currentTimeMillis() - time));
-        String entityName = MetadataContextBuilder.getEntityName(entId, tableId);
+        String entityName = HibernateUtils.getEntityName(entId, tableId);
         StringBuilder qlBuilder = new StringBuilder("from ").append(entityName);
         if (!param.isEmpty()) {
             String whereClause = param.entrySet().stream()
@@ -47,7 +46,7 @@ public class DatapoolRepositoryImpl implements DatapoolRepository {
     @Override
     public Long save(String entId, String tableId, Map<String, Object> data) {
         Session session = HibernateUtils.openSession(entId, tableId);
-        String entityName = MetadataContextBuilder.getEntityName(entId, tableId);
+        String entityName = HibernateUtils.getEntityName(entId, tableId);
         Long id = (Long) session.save(entityName, data);
         session.close();
         return id;
@@ -56,7 +55,7 @@ public class DatapoolRepositoryImpl implements DatapoolRepository {
     @Override
     public void update(String entId, String tableId, Map<String, Object> data) {
         Session session = HibernateUtils.openSession(entId, tableId);
-        String entityName = MetadataContextBuilder.getEntityName(entId, tableId);
+        String entityName = HibernateUtils.getEntityName(entId, tableId);
         session.update(entityName, data);
         session.close();
     }
@@ -64,7 +63,7 @@ public class DatapoolRepositoryImpl implements DatapoolRepository {
     @Override
     public void saveOrUpdate(String entId, String tableId, Map<String, Object> data) {
         Session session = HibernateUtils.openSession(entId, tableId);
-        String entityName = MetadataContextBuilder.getEntityName(entId, tableId);
+        String entityName = HibernateUtils.getEntityName(entId, tableId);
         session.saveOrUpdate(entityName, data);
         session.close();
     }
@@ -72,7 +71,7 @@ public class DatapoolRepositoryImpl implements DatapoolRepository {
     @Override
     public void delete(String entId, String tableId, Map<String, Object> data) {
         Session session = HibernateUtils.openSession(entId, tableId);
-        String entityName = MetadataContextBuilder.getEntityName(entId, tableId);
+        String entityName = HibernateUtils.getEntityName(entId, tableId);
         session.delete(entityName, data);
         session.close();
     }
@@ -80,7 +79,7 @@ public class DatapoolRepositoryImpl implements DatapoolRepository {
     @Override
     public void deleteById(String entId, String tableId, Long id) {
         Session session = HibernateUtils.openSession(entId, tableId);
-        String entityName = MetadataContextBuilder.getEntityName(entId, tableId);
+        String entityName = HibernateUtils.getEntityName(entId, tableId);
         Map<String, Object> data = new HashMap<>();
         data.put("id", id);
         session.delete(entityName, data);
