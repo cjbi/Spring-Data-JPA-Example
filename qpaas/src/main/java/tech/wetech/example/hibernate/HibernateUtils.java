@@ -26,25 +26,25 @@ public class HibernateUtils {
     public HibernateUtils(SessionFactory sessionFactory) {
         HibernateUtils.sessionFactory = sessionFactory;
         StandardServiceRegistry serviceRegistry = sessionFactory.getSessionFactoryOptions().getServiceRegistry();
-        metadataSources = new MetadataSources(serviceRegistry);
+        HibernateUtils.metadataSources = new MetadataSources(serviceRegistry);
     }
 
     public static boolean hasEntityMapping(String entityName) {
-        return metadataSources.buildMetadata().getEntityBinding(entityName) != null;
+        return HibernateUtils.metadataSources.buildMetadata().getEntityBinding(entityName) != null;
     }
 
     public static Session openSession(String entId, String tableId) {
         String entityName = MetadataContextBuilder.getEntityName(entId, tableId);
         if (hasEntityMapping(entityName)) {
-            return sessionFactory.openSession();
+            return HibernateUtils.sessionFactory.openSession();
         }
         List<DatacenterField> list = getDatacenterField(entId, tableId);
         MetadataContext metadataContexts = MetadataContextBuilder.buildMetaDataContexts(entId, tableId, list);
         String xmlString = MetadataSourcesGenerator.toXMLString(metadataContexts);
-        metadataSources.addInputStream(new ByteArrayInputStream(xmlString.getBytes()));
+        HibernateUtils.metadataSources.addInputStream(new ByteArrayInputStream(xmlString.getBytes()));
         Metadata metadata = metadataSources.buildMetadata();
-        sessionFactory = metadata.buildSessionFactory();
-        return sessionFactory.openSession();
+        HibernateUtils.sessionFactory = metadata.buildSessionFactory();
+        return HibernateUtils.sessionFactory.openSession();
     }
 
     public static String getEntityName(String entId, String tableId) {
